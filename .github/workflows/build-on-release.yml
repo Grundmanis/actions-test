@@ -1,0 +1,40 @@
+name: Build on release
+
+on:
+  create:
+    branches:
+      - extension-release-*
+
+jobs:
+  build-all:
+    if: toJSON(github.event.commits) != '[]'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules-
+      - run: sudo apt-get update
+#      - name: configure github auth for npm
+#        run: git config --global url."https://${{ secrets.GH_DEPENDENCIES_TOKEN }}:x-oauth-basic@github.com/".insteadOf https://x-oauth-basic@github.com/
+      - name: Install NPM Dependencies
+        run: npm ci --silent | cat
+#      - name: Build dev chrome extension
+#        run: npm run chrome-dev -- --env version=1.2.3
+#      - name: Build production chrome extension
+#        run: npm run chrome-prod -- --env version=1.2.3
+#      - name: Build production firefox extension
+#        run: npm run firefox-prod
+#      - name: Build production edge extension
+#        run: npm run edge-prod
