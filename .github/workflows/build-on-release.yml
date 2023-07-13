@@ -18,6 +18,11 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
+      - uses: ncipollo/release-action@v1
+        with:
+#          artifacts: "dist/chrome/index.js"
+          bodyFile: "README.md"
+          generateReleaseNotes: true
       - name: Cache node_modules
         uses: actions/cache@v3
         with:
