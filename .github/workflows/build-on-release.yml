@@ -1,9 +1,9 @@
 name: Build on release
 
 on:
-  create:
+  push:
     branches:
-      - extension-release-*
+      - 'extension-release-*'
 
 jobs:
   build-all:
