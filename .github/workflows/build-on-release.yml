@@ -19,6 +19,8 @@ jobs:
           persist-credentials: false
       - name: Get last commit message
         run: echo "LAST_COMMIT_MESSAGE=$(git log -1 --pretty=%B | xargs -0 | head -n 1 | iconv -c -t ascii//TRANSLIT | sed -E 's/[~^]+//g' | sed -E 's/[^a-zA-Z0-9]+/-/g' | sed -E 's/^-+|-+$//g' | tr A-Z a-z)" >> $GITHUB_ENV
+      - name: Show last commit message
+        run: echo $LAST_COMMIT_MESSAGE
 
       #      - name: Get second last tag
 #        run: echo "NEW_TAG2=${ git describe --tags $(git rev-list --tags --max-count=1)}"
