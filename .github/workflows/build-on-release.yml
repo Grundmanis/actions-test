@@ -27,8 +27,8 @@ jobs:
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
           MAJOR=${VERSION%%.*}
-          echo $VERSION
-          echo $MAJOR
+#          echo $VERSION
+#          echo $MAJOR
 #      - name: Set output
 #        id: vars
 #        run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
