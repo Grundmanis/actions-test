@@ -13,6 +13,12 @@ jobs:
       contents: write
     timeout-minutes: 25
     steps:
+      - name: Extract version to step variable
+        id: get_version
+        run: |
+          echo "RELEASE_VERSION=$(
+              echo $GITHUB_SHORT_REF | rev | cut -d/ -f1 | rev
+              )" >> $GITHUB_OUTPUT
       - uses: actions/checkout@v3
         with:
           persist-credentials: false
