@@ -20,9 +20,13 @@ jobs:
           fetch-depth: 0,
       - name: Get last tag
         run: echo "LAST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_ENV
-      - name: Check the last tag
-        if: ${{ env.LAST_TAG == '' }}
-        run: echo "LAST_TAG=1.0.0" >> $GITHUB_ENV
+#      - name: Check the last tag
+#        if: ${{ env.LAST_TAG == '' }}
+#        run: echo "LAST_TAG=1.0.0" >> $GITHUB_ENV
+      - name: Update patch
+        run: |
+          PATCH=${*.*.VERSION%%}
+          echo "$PATCH"
 
       #      - name: Get second last tag
 #        run: echo "NEW_TAG2=${ git describe --tags $(git rev-list --tags --max-count=1)}"
