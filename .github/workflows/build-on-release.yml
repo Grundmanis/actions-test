@@ -19,7 +19,7 @@ jobs:
           persist-credentials: false,
           fetch-depth: 0,
       - name: Get last tag
-        run: echo "LAST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1)) || 1.0.0" >> $GITHUB_ENV
+        run: echo "LAST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_ENV
       - name: Show last tag
         run: echo "The last tag is $LAST_TAG"
 
@@ -57,12 +57,18 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-      - uses: ncipollo/release-action@v1
+      - if: $LAST_TAG != ""
+        uses: ncipollo/release-action@v1
         with:
-#          artifacts: "dist/chrome/index.js"
           bodyFile: "README.md"
           generateReleaseNotes: true
           tag: $LAST_TAG
+      - if: $LAST_TAG == ""
+        uses: ncipollo/release-action@v1
+        with:
+          bodyFile: "README.md"
+          generateReleaseNotes: true
+          tag: "1.0.0"
       - name: Cache node_modules
         uses: actions/cache@v3
         with:
