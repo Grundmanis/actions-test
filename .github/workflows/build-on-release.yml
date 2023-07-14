@@ -18,7 +18,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Get last tag
-        run: echo ${git describe --tags}
+        run: echo ${{git describe --tags}}
 #      - name: Get second last tag
 #        run: echo "NEW_TAG2=${ git describe --tags $(git rev-list --tags --max-count=1)}"
 #      - name: Print tags
