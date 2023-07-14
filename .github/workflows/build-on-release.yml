@@ -19,12 +19,10 @@ jobs:
           persist-credentials: false,
           fetch-depth: 0,
       - name: Get last tag
-        run: |
-          echo "LAST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_ENV
-          PATCH=${*.*.VERSION}
-          echo $PATCH
-      - name: Show last tag
-        run: echo "The last tag is $LAST_TAG"
+        run: echo "LAST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_ENV
+      - name: Check the last tag
+        if: ${{ env.LAST_TAG == "" }}
+        run: echo "LAST_TAG=1.0.0" >> $GITHUB_ENV
 
       #      - name: Get second last tag
 #        run: echo "NEW_TAG2=${ git describe --tags $(git rev-list --tags --max-count=1)}"
@@ -60,12 +58,12 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-#      - uses: ncipollo/release-action@v1
-#        with:
-##          artifacts: "dist/chrome/index.js"
-#          bodyFile: "README.md"
-#          generateReleaseNotes: true
-          tag: ${{ env.GITHUB_SHA_SHORT }}
+      - uses: ncipollo/release-action@v1
+        with:
+#          artifacts: "dist/chrome/index.js"
+          bodyFile: "README.md"
+          generateReleaseNotes: true
+          tag: ${{ env.LAST_TAG }}
       - name: Cache node_modules
         uses: actions/cache@v3
         with:
