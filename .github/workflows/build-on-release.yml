@@ -20,23 +20,32 @@ jobs:
 #          echo "RELEASE_VERSION=$(
 #              echo $GITHUB_SHORT_REF | rev | cut -d/ -f1 | rev
 #              )" >> $GITHUB_OUTPUT
-#      - uses: actions/checkout@v3
-#        with:
-#          persist-credentials: false
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - name: Show GitHub ref
-        run: echo "$GITHUB_REF"
-      - name: GitHub Tag Name example
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - name: Get last tag
+        run: echo "NEW_TAG=${{ git describe --tags $(git rev-list --tags --max-count=1)}}" >> $GITHUB_ENV
+      - name: Get second last tag
+        run: echo "NEW_TAG2=${{ git describe --tags $(git rev-list --tags --max-count=1)}}"
+      - name: Print tags
         run: |
-          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-          echo "Tag name from github.ref_name: ${{  github.ref_name }}"
-      - name: GitHub Tag Name example
-        run: |
-          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
-          echo "Tag name from github.ref_name: ${{  github.ref_name }}"
+          echo $NEW_TAG
+          echo $NEW_TAG2
+
+#      - name: Dump GitHub context
+#        env:
+#          GITHUB_CONTEXT: ${{ toJson(github) }}
+#        run: echo "$GITHUB_CONTEXT"
+#      - name: Show GitHub ref
+#        run: echo "$GITHUB_REF"
+#      - name: GitHub Tag Name example
+#        run: |
+#          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
+#          echo "Tag name from github.ref_name: ${{  github.ref_name }}"
+#      - name: GitHub Tag Name example
+#        run: |
+#          echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
+#          echo "Tag name from github.ref_name: ${{  github.ref_name }}"
 #      - name: Set output
 #        id: vars
 #        run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
