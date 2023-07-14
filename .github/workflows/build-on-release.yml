@@ -14,9 +14,9 @@ jobs:
       contents: write
     timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v3
-        with:
-          persist-credentials: false
+#      - uses: actions/checkout@v3
+#        with:
+#          persist-credentials: false
       - name: Get last tag
         run: echo "LAST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_ENV
       - name: Show last tag
