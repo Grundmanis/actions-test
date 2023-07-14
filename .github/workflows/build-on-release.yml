@@ -18,7 +18,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Get last tag
-        run: echo "LAST_TAG=$(git describe" >> $GITHUB_ENV
+        run: echo "LAST_TAG=$(git tag" >> $GITHUB_ENV
       - name: Show last tag
         run: echo $LAST_TAG
 
