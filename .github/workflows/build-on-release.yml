@@ -17,9 +17,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           persist-credentials: false
-      - name: Get last tag
-        run: echo ${{git describe --tags}}
-#      - name: Get second last tag
+      - name: Get last commit message
+        run: echo "LAST_COMMIT_MESSAGE=$(git log -1 --pretty=%B | xargs -0 | head -n 1 | iconv -c -t ascii//TRANSLIT | sed -E 's/[~^]+//g' | sed -E 's/[^a-zA-Z0-9]+/-/g' | sed -E 's/^-+|-+$//g' | tr A-Z a-z)" >> $GITHUB_ENV
+
+      #      - name: Get second last tag
 #        run: echo "NEW_TAG2=${ git describe --tags $(git rev-list --tags --max-count=1)}"
 #      - name: Print tags
 #        run: |
