@@ -14,15 +14,24 @@ jobs:
       contents: write
     timeout-minutes: 25
     steps:
-      - name: Extract version to step variable
-        id: get_version
-        run: |
-          echo "RELEASE_VERSION=$(
-              echo $GITHUB_SHORT_REF | rev | cut -d/ -f1 | rev
-              )" >> $GITHUB_OUTPUT
+#      - name: Extract version to step variable
+#        id: get_version
+#        run: |
+#          echo "RELEASE_VERSION=$(
+#              echo $GITHUB_SHORT_REF | rev | cut -d/ -f1 | rev
+#              )" >> $GITHUB_OUTPUT
       - uses: actions/checkout@v3
         with:
           persist-credentials: false
+      - name: Set output
+        id: vars
+        run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+      - name: Check output
+        env:
+          RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+        run: |
+          echo $RELEASE_VERSION
+          echo ${{ steps.vars.outputs.tag }}
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
@@ -32,7 +41,7 @@ jobs:
 #          artifacts: "dist/chrome/index.js"
           bodyFile: "README.md"
           generateReleaseNotes: true
-          tag: ${{steps.get_version.outputs.RELEASE_VERSION}}
+          tag: "1.0.0"
       - name: Cache node_modules
         uses: actions/cache@v3
         with:
