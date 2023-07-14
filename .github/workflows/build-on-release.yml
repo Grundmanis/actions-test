@@ -31,7 +31,7 @@ jobs:
 #          artifacts: "dist/chrome/index.js"
           bodyFile: "README.md"
           generateReleaseNotes: true
-          tag: "1.0.0"
+          tag: ${{steps.get_version.outputs.RELEASE_VERSION}}
       - name: Cache node_modules
         uses: actions/cache@v3
         with:
