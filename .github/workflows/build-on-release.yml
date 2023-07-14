@@ -62,12 +62,11 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-      - uses: ncipollo/release-action@v1
-        with:
-#          artifacts: "dist/chrome/index.js"
-          bodyFile: "README.md"
-          generateReleaseNotes: true
-          tag: ${{ env.LAST_TAG }}
+#      - uses: ncipollo/release-action@v1
+#        with:
+#          bodyFile: "README.md"
+#          generateReleaseNotes: true
+#          tag: ${{ env.LAST_TAG }}
       - name: Cache node_modules
         uses: actions/cache@v3
         with:
