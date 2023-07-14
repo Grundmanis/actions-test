@@ -21,8 +21,8 @@ jobs:
 #              echo $GITHUB_SHORT_REF | rev | cut -d/ -f1 | rev
 #              )" >> $GITHUB_OUTPUT
       - uses: actions/checkout@v3
-        with:
-          persist-credentials: false
+#        with:
+#          persist-credentials: false
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
