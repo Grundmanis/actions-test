@@ -9,6 +9,8 @@ jobs:
   build-all:
     if: github.event.created
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
     timeout-minutes: 25
     steps:
       - uses: actions/checkout@v3
