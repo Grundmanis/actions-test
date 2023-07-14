@@ -21,7 +21,7 @@ jobs:
       - name: Get last tag
         run: echo "LAST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_ENV
       - name: Check the last tag
-        if: ${{ env.LAST_TAG == "" }}
+        if: ${{ env.LAST_TAG == '' }}
         run: echo "LAST_TAG=1.0.0" >> $GITHUB_ENV
 
       #      - name: Get second last tag
