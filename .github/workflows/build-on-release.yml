@@ -18,13 +18,13 @@ jobs:
         with:
           persist-credentials: false
       - name: Get last tag
-        run: echo "NEW_TAG=${ git describe --tags $(git rev-list --tags --max-count=1)}" >> $GITHUB_ENV
-      - name: Get second last tag
-        run: echo "NEW_TAG2=${ git describe --tags $(git rev-list --tags --max-count=1)}"
-      - name: Print tags
-        run: |
-          echo $NEW_TAG
-          echo $NEW_TAG2
+        run: echo git describe --tags
+#      - name: Get second last tag
+#        run: echo "NEW_TAG2=${ git describe --tags $(git rev-list --tags --max-count=1)}"
+#      - name: Print tags
+#        run: |
+#          echo $NEW_TAG
+#          echo $NEW_TAG2
 
 #      - name: Dump GitHub context
 #        env:
