@@ -18,7 +18,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Get last tag
-        run: echo "LAST_TAG=$(git describe --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_ENV
+        run: echo "LAST_TAG=$(git describe" >> $GITHUB_ENV
       - name: Show last tag
         run: echo $LAST_TAG
 
