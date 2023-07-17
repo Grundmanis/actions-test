@@ -85,7 +85,7 @@ jobs:
       - name: Install NPM Dependencies
         run: npm ci --silent | cat
       - name: Create a zip
-        run: zip -r -q chrome.zip dist/chrome
+        run: zip -r -q chrome.zip dist/chrome/*
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
