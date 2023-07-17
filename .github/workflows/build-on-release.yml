@@ -84,8 +84,12 @@ jobs:
 #        run: git config --global url."https://${{ secrets.GH_DEPENDENCIES_TOKEN }}:x-oauth-basic@github.com/".insteadOf https://x-oauth-basic@github.com/
       - name: Install NPM Dependencies
         run: npm ci --silent | cat
-      - name: Create a zip
-        run: zip -r -q chrome.zip dist/chrome/*
+      - name: Create a chrome zip
+        run: zip -r -q chrome.zip *
+        working-directory: ./dist/chrome
+      - name: Create a firefox zip
+        run: zip -r -q firefox.zip *
+        working-directory: ./dist/firefox
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
