@@ -51,8 +51,8 @@ jobs:
           git config --global user.name "Armands Grundmanis"
           VERSION=`git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}'`
           echo "new_tag=`echo $VERSION`" >> "$GITHUB_OUTPUT"
-          git tag -a $VERSION
-          git push --tags -m "New Release"
+          git tag -a $VERSION -m "New Release"
+          git push --tags
       - name: Display
         run: echo new tag is ${{ steps.tag_version.outputs.new_tag }}
 
