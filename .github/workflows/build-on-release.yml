@@ -47,11 +47,12 @@ jobs:
       - name: Bump version and push tag
         id: tag_version
         run: |
-          echo "current_tag=`echo $(git describe --tags --abbrev=0)`" >> "$GITHUB_OUTPUT"
+          VERSION=`git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}'`
+          echo "new_tag=`echo $VERSION`" >> "$GITHUB_OUTPUT"
+          echo $VERSION;
+      - name: Display
+        run: echo new tag is ${{ steps.tag_version.outputs.new_tag }}
 
-      - name: Display steps
-        run: |
-          echo Current tag ${{ steps.tag_version.outputs.current_tag }}
 #      - name: Create a GitHub release
 #        uses: ncipollo/release-action@v1
 #        with:
