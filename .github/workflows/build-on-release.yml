@@ -52,7 +52,7 @@ jobs:
           VERSION=`git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}'`
           echo "new_tag=`echo $VERSION`" >> "$GITHUB_OUTPUT"
           git tag -a $VERSION
-          git push --tags
+          git push --tags -m "New Release"
       - name: Display
         run: echo new tag is ${{ steps.tag_version.outputs.new_tag }}
 
