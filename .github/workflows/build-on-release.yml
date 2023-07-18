@@ -36,7 +36,7 @@ jobs:
         run: zip -r -q chrome.zip *
         working-directory: ./dist/chrome
       - name: Create a firefox zip
-        run: rm -r node_modules; zip -r -q firefox.zip firefox
+        run: zip -r -q firefox.zip firefox
         working-directory: ./dist/
       - name: Bump version and push tag
         id: tag_version
