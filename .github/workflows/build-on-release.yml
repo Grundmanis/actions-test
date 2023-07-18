@@ -46,8 +46,6 @@ jobs:
 #          release_branches: extension-release-*.com/
       - name: Bump version and push tag
         id: tag_version
-        with:
-          github_token: "${{ secrets.github_token }}"
         run: |
           git config --global user.email "grundmanweb@gmail.com
           git config --global user.name "Armands Grundmanis"
