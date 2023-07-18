@@ -33,10 +33,10 @@ jobs:
       - name: Install NPM Dependencies
         run: npm ci --silent | cat
       - name: Create a chrome zip
-        run: zip -r -q chrome.zip *
+        run: zip -r chrome.zip *
         working-directory: ./dist/chrome
       - name: Create a firefox zip
-        run: zip -r -q firefox.zip firefox
+        run: zip -r firefox.zip firefox/
         working-directory: ./dist/
       - name: Bump version and push tag
         id: tag_version
