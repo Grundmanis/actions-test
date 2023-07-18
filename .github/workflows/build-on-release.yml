@@ -46,9 +46,11 @@ jobs:
 #          release_branches: extension-release-*.com/
       - name: Bump version and push tag
         id: tag_version
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
-          git config --global user.email "grundmanweb@gmail.com"
-          git config --global user.name "Grundmanis"
+#          git config --global user.email "grundmanweb@gmail.com"
+#          git config --global user.name "Grundmanis"
           VERSION=`git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}'`
           echo "new_tag=`echo $VERSION`" >> "$GITHUB_OUTPUT"
           git tag -a $VERSION -m "New Release"
