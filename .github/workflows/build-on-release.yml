@@ -47,9 +47,12 @@ jobs:
       - name: Bump version and push tag
         id: tag_version
         run: |
+          git config --global user.email "grundmanweb@gmail.com"
+          git config --global user.name "Armands Grundmanis"
           VERSION=`git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}'`
           echo "new_tag=`echo $VERSION`" >> "$GITHUB_OUTPUT"
-          echo $VERSION;
+          git tag -a $VERSION -m "New Release"
+          git push --tags
       - name: Display
         run: echo new tag is ${{ steps.tag_version.outputs.new_tag }}
 
