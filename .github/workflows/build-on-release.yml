@@ -31,7 +31,7 @@ jobs:
             ${{ runner.os }}-node_modules-
       - run: sudo apt-get update
       - name: Install NPM Dependencies
-        run: npm ci --silent | cat
+        run: git rev-parse --abbrev-ref HEAD; npm ci --silent | cat
       - name: Create a chrome zip
         run: zip -r chrome.zip *
         working-directory: ./dist/chrome
