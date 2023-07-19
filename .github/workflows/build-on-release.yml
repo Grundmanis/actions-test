@@ -58,6 +58,7 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: patch
           DEFAULT_BRANCH: extension-release-19
+          TAG_CONTEXT: branch
           RELEASE_BRANCHES: extension-release-19
           BRANCH_HISTORY: last
           DRY_RUN: true
