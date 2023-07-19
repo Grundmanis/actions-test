@@ -57,8 +57,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
           WITH_V: true
           DEFAULT_BUMP: patch
-          DEFAULT_BRANCH: extension-release-18-1
-          RELEASE_BRANCHES: extension-release-18-1
+          DEFAULT_BRANCH: extension-release-19
+          RELEASE_BRANCHES: extension-release-19
           BRANCH_HISTORY: last
           DRY_RUN: true
 #      - name: Display
