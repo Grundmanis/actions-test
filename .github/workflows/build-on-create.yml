@@ -20,16 +20,16 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node_modules-
-      - run: sudo apt-get update
-      - name: Install NPM Dependencies
-        run: npm ci --silent | cat
+#      - name: Cache node_modules
+#        uses: actions/cache@v3
+#        with:
+#          path: node_modules
+#          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.os }}-node_modules-
+#      - run: sudo apt-get update
+#      - name: Install NPM Dependencies
+#        run: npm ci --silent | cat
       - name: Create a chrome zip
         run: zip -r chrome.zip *
         working-directory: ./dist/chrome
