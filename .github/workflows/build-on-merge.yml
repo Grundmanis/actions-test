@@ -52,7 +52,7 @@ jobs:
       - name: Current branch tag
         id: current_tag
         run: |
-          echo "tag=`echo (git describe --tags --abbrev=0)`" >> "$GITHUB_OUTPUT"
+          echo "tag=`echo $(git describe --tags --abbrev=0)`" >> "$GITHUB_OUTPUT"
       - name: Bump version and push tag
         id: tag_version
         uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
