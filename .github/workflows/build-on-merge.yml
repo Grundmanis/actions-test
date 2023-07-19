@@ -57,11 +57,10 @@ jobs:
       - name: Bump version and push tag
         id: tag_version
         run: |
-#          git config --global user.name "John Doe"
-#          git config --global user.email johndoe@example.com
           VERSION=`git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}'`
           echo "new_tag=`echo $VERSION`" >> "$GITHUB_OUTPUT"
-
+#          git config --global user.name "John Doe"
+#          git config --global user.email johndoe@example.com
 #          git tag $VERSION
 #          git push --tags
 #      - name: Bump version and push tag
