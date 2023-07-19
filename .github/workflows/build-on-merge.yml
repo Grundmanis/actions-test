@@ -1,15 +1,20 @@
 name: Build on release
 
+#on:
+#  pull_request:
+#    types:
+#      - closed
+#    branches:
+#      - extension-release-*
+
 on:
-  pull_request:
-    types:
-      - closed
+  push:
     branches:
-      - extension-release-*
+      - 'extension-release-*'
 
 jobs:
   build-on-merge:
-    if: github.event.pull_request.merged == true
+#    if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -66,11 +71,11 @@ jobs:
           DRY_RUN: true
 #      - name: Display
 #        run: echo new tag is ${{ steps.tag_version.outputs.new_tag }}
-      - name: Create a GitHub release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: ${{ steps.tag_version.outputs.changelog }}
-          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
+#      - name: Create a GitHub release
+#        uses: ncipollo/release-action@v1
+#        with:
+#          tag: ${{ steps.tag_version.outputs.new_tag }}
+#          name: Release ${{ steps.tag_version.outputs.new_tag }}
+#          body: ${{ steps.tag_version.outputs.changelog }}
+#          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
 
