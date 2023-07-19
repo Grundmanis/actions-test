@@ -60,7 +60,7 @@ jobs:
           DEFAULT_BRANCH: extension-release-18-1
           RELEASE_BRANCHES: extension-release-18-1
           BRANCH_HISTORY: full
-          DRY_RUN: true
+#          DRY_RUN: true
 #      - name: Display
 #        run: echo new tag is ${{ steps.tag_version.outputs.new_tag }}
 #      - name: Create a GitHub release
