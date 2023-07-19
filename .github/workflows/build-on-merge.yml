@@ -67,7 +67,7 @@ jobs:
           TAG_CONTEXT: branch
 #          RELEASE_BRANCHES: extension-release-19
 #          INITIAL_VERSION: 22.0.0
-#          BRANCH_HISTORY: last
+          BRANCH_HISTORY: last
           DRY_RUN: true
 #      - name: Display
 #        run: echo new tag is ${{ steps.tag_version.outputs.new_tag }}
