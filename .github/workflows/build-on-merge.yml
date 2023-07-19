@@ -44,12 +44,12 @@ jobs:
       - name: Create a firefox zip
         run: zip -r firefox.zip *
         working-directory: ./dist/firefox
-      #      - name: Bump version and push tag
-      #        id: tag_version
-      #        uses: mathieudutour/github-tag-action@v6.1
-      #        with:
-      #          github_token: ${{ secrets.GITHUB_TOKEN }}
-      #          release_branches: extension-release-*
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: extension-release-*
 #      - name: Current branch tag
 #        id: current_tag
 #        run: |
@@ -57,12 +57,13 @@ jobs:
       - name: Bump version and push tag
         id: tag_version
         run: |
-          git config --global user.name "John Doe"
-          git config --global user.email johndoe@example.com
+#          git config --global user.name "John Doe"
+#          git config --global user.email johndoe@example.com
           VERSION=`git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}'`
           echo "new_tag=`echo $VERSION`" >> "$GITHUB_OUTPUT"
-          git tag $VERSION
-          git push --tags
+
+#          git tag $VERSION
+#          git push --tags
 #      - name: Bump version and push tag
 #        id: tag_version
 #        uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
@@ -78,6 +79,12 @@ jobs:
           #          RELEASE_BRANCHES: extension-release-19
       - name: Display
         run: echo new tag is ${{ steps.tag_version.outputs.tag }}
+      - name: Push version tag
+        id: tag_push
+        uses: mathieudutour/github-tag-action@v6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{ steps.tag_version.outputs.tag }}
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
