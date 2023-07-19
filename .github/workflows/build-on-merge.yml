@@ -23,6 +23,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           persist-credentials: false,
+          fetch-depth: 0,
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
@@ -58,8 +59,8 @@ jobs:
         run: |
           VERSION=`git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}'`
           echo "new_tag=`echo $VERSION`" >> "$GITHUB_OUTPUT"
-#          git tag -l $VERSION
-#          git push --tags
+          git tag $VERSION
+          git push --tags
 #      - name: Bump version and push tag
 #        id: tag_version
 #        uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
