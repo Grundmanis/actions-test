@@ -7,7 +7,8 @@ on:
 #      - 'master'
 
 jobs:
-  build-all:
+  build-on-create:
+    if: github.event.created
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -49,8 +50,7 @@ jobs:
       #          echo "new_tag=`echo $VERSION`" >> "$GITHUB_OUTPUT"
       #          git tag -a $VERSION -m "New Release"
       #          git push --tags
-      - name: Bump version from master and push tag
-        if: github.event.created
+      - name: Bump version and push tag
         id: tag_version
         uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
         env:
@@ -65,8 +65,57 @@ jobs:
 #          DRY_RUN: true
 #      - name: Display
 #        run: echo new tag is ${{ steps.tag_version.outputs.new_tag }}
-      - name: Bump version from branch and push tag
-        if: github.event.pull_request.merged == true
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
+  build-on-merge:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false,
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules-
+      - run: sudo apt-get update
+      - name: Install NPM Dependencies
+        run: npm ci --silent | cat
+      - name: Create a chrome zip
+        run: zip -r chrome.zip *
+        working-directory: ./dist/chrome
+      - name: Create a firefox zip
+        run: zip -r firefox.zip *
+        working-directory: ./dist/firefox
+      #      - name: Bump version and push tag
+      #        id: tag_version
+      #        uses: mathieudutour/github-tag-action@v6.1
+      #        with:
+      #          github_token: ${{ secrets.GITHUB_TOKEN }}
+      #          release_branches: extension-release-*
+      #      - name: Bump version and push tag
+      #        id: tag_version
+      #        run: |
+      #          VERSION=`git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}'`
+      #          echo "new_tag=`echo $VERSION`" >> "$GITHUB_OUTPUT"
+      #          git tag -a $VERSION -m "New Release"
+      #          git push --tags
+      - name: Bump version and push tag
         id: tag_version
         uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
         env:
@@ -88,3 +137,4 @@ jobs:
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
           artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
+
