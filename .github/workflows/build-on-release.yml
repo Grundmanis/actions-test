@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-all:
-    #    if: github.event.created
+    if: github.event.created
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -17,7 +17,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           persist-credentials: false,
-          fetch-depth: 1,
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
@@ -58,17 +57,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
           WITH_V: true
           DEFAULT_BUMP: patch
-          DEFAULT_BRANCH: extension-release-18-1
-          RELEASE_BRANCHES: extension-release-18-1
-          BRANCH_HISTORY: full
-          DRY_RUN: true
-      - name: Display
-        run: echo new tag is ${{ steps.tag_version.outputs.new_tag }}
-
-#      - name: Create a GitHub release
-#        uses: ncipollo/release-action@v1
-#        with:
-#          tag: ${{ steps.tag_version.outputs.new_tag }}
-#          name: Release ${{ steps.tag_version.outputs.new_tag }}
-#          body: ${{ steps.tag_version.outputs.changelog }}
-#          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
+#          DEFAULT_BRANCH: extension-release-19
+#          TAG_CONTEXT: branch
+#          RELEASE_BRANCHES: extension-release-19
+#          INITIAL_VERSION: 22.0.0
+#          BRANCH_HISTORY: last
+#          DRY_RUN: true
+#      - name: Display
+#        run: echo new tag is ${{ steps.tag_version.outputs.new_tag }}
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
