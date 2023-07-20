@@ -24,10 +24,10 @@ jobs:
         with:
           persist-credentials: false,
           fetch-depth: 0,
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'npm'
+#      - uses: actions/setup-node@v3
+#        with:
+#          node-version: '18'
+#          cache: 'npm'
 #      - name: Cache node_modules
 #        uses: actions/cache@v3
 #        with:
@@ -38,12 +38,12 @@ jobs:
 #      - run: sudo apt-get update
 #      - name: Install NPM Dependencies
 #        run: npm ci --silent | cat
-      - name: Create a chrome zip
-        run: zip -r chrome.zip *
-        working-directory: ./dist/chrome
-      - name: Create a firefox zip
-        run: zip -r firefox.zip *
-        working-directory: ./dist/firefox
+#      - name: Create a chrome zip
+#        run: zip -r chrome.zip *
+#        working-directory: ./dist/chrome
+#      - name: Create a firefox zip
+#        run: zip -r firefox.zip *
+#        working-directory: ./dist/firefox
 #      - name: Bump version and push tag
 #        id: tag_version
 #        uses: mathieudutour/github-tag-action@v6.1
@@ -61,7 +61,7 @@ jobs:
           VERSION=`git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}'`
           echo "new_tag=`echo $VERSION`" >> "$GITHUB_OUTPUT"
           echo $VERSION2
-          echo $VERSION1
+          echo $VERSION
 #          git config --global user.name "John Doe"
 #          git config --global user.email johndoe@example.com
 #          git tag $VERSION
