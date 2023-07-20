@@ -61,6 +61,7 @@ jobs:
           VERSION=`git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}'`
           echo "new_tag=`echo $VERSION`" >> "$GITHUB_OUTPUT"
           echo $VERSION2
+          echo $VERSION1
 #          git config --global user.name "John Doe"
 #          git config --global user.email johndoe@example.com
 #          git tag $VERSION
@@ -81,15 +82,16 @@ jobs:
       - name: Display
         run: echo new tag is ${{ steps.tag_version.outputs.tag }}
       - name: Push version tag
-        id: tag_push
-        uses: mathieudutour/github-tag-action@v6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          custom_tag: ${{ steps.tag_version.outputs.tag }}
-      - name: Create a GitHub release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ steps.tag_version.outputs.tag }}
-          name: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: ${{ steps.tag_version.outputs.changelog }}
-          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
+        uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
+          WITH_V: true
+          DEFAULT_BUMP: patch
+          DRY_RUN: true
+#      - name: Create a GitHub release
+#        uses: ncipollo/release-action@v1
+#        with:
+#          tag: ${{ steps.tag_version.outputs.tag }}
+#          name: Release ${{ steps.tag_version.outputs.new_tag }}
+#          body: ${{ steps.tag_version.outputs.changelog }}
+#          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
