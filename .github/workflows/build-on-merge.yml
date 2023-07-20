@@ -1,20 +1,15 @@
 name: Build on merge
 
-#on:
-#  pull_request:
-#    types:
-#      - closed
-#    branches:
-#      - extension-release-*
-
 on:
-  push:
+  pull_request:
+    types:
+      - closed
     branches:
-      - 'extension-release-*'
+      - extension-release-*
 
 jobs:
   build-on-merge:
-#    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     permissions:
       contents: write
