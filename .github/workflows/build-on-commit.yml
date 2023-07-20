@@ -1,15 +1,12 @@
-name: Build on merge
+name: Build on commit
 
 on:
-  pull_request:
-    types:
-      - closed
+  push:
     branches:
-      - extension-release-*
+      - 'extension-release-*'
 
 jobs:
-  build-on-merge:
-    if: github.event.pull_request.merged == true
+  build-on-commit:
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -53,25 +50,6 @@ jobs:
         id: tag_version
         run: |
           echo "new_tag=`echo $(git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}')`" >> "$GITHUB_OUTPUT"
-#          git config --global user.name "John Doe"
-#          git config --global user.email johndoe@example.com
-#          git tag $VERSION
-#          git push --tags
-#      - name: Bump version and push tag
-#        id: tag_version
-#        uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
-#          WITH_V: true
-#          DEFAULT_BUMP: patch
-#          BRANCH_HISTORY: full
-#          DRY_RUN: true
-#          TAG_CONTEXT: branch
-#          INITIAL_VERSION: 22.0.0
-          #          DEFAULT_BRANCH: extension-release-19
-          #          RELEASE_BRANCHES: extension-release-19
-      - name: Display
-        run: echo new tag is ${{ steps.tag_version.outputs.new_tag }}
       - name: Push version tag
         uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
         env:
