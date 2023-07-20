@@ -38,12 +38,12 @@ jobs:
 #      - run: sudo apt-get update
 #      - name: Install NPM Dependencies
 #        run: npm ci --silent | cat
-#      - name: Create a chrome zip
-#        run: zip -r chrome.zip *
-#        working-directory: ./dist/chrome
-#      - name: Create a firefox zip
-#        run: zip -r firefox.zip *
-#        working-directory: ./dist/firefox
+      - name: Create a chrome zip
+        run: zip -r chrome.zip *
+        working-directory: ./dist/chrome
+      - name: Create a firefox zip
+        run: zip -r firefox.zip *
+        working-directory: ./dist/firefox
 #      - name: Bump version and push tag
 #        id: tag_version
 #        uses: mathieudutour/github-tag-action@v6.1
@@ -87,7 +87,7 @@ jobs:
       - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.tag_version.outputs.tag }}
+          tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
           artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
