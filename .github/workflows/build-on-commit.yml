@@ -1,0 +1,88 @@
+name: Build on merge
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - extension-release-*
+
+jobs:
+  build-on-merge:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false,
+          fetch-depth: 0,
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+#      - name: Cache node_modules
+#        uses: actions/cache@v3
+#        with:
+#          path: node_modules
+#          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.os }}-node_modules-
+#      - run: sudo apt-get update
+#      - name: Install NPM Dependencies
+#        run: npm ci --silent | cat
+      - name: Create a chrome zip
+        run: zip -r chrome.zip *
+        working-directory: ./dist/chrome
+      - name: Create a firefox zip
+        run: zip -r firefox.zip *
+        working-directory: ./dist/firefox
+#      - name: Bump version and push tag
+#        id: tag_version
+#        uses: mathieudutour/github-tag-action@v6.1
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          release_branches: extension-release-*
+#      - name: Current branch tag
+#        id: current_tag
+#        run: |
+#          echo "tag=`echo $(git describe --tags --abbrev=0)`" >> "$GITHUB_OUTPUT"
+      - name: Bump version and push tag
+        id: tag_version
+        run: |
+          echo "new_tag=`echo $(git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}')`" >> "$GITHUB_OUTPUT"
+#          git config --global user.name "John Doe"
+#          git config --global user.email johndoe@example.com
+#          git tag $VERSION
+#          git push --tags
+#      - name: Bump version and push tag
+#        id: tag_version
+#        uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
+#          WITH_V: true
+#          DEFAULT_BUMP: patch
+#          BRANCH_HISTORY: full
+#          DRY_RUN: true
+#          TAG_CONTEXT: branch
+#          INITIAL_VERSION: 22.0.0
+          #          DEFAULT_BRANCH: extension-release-19
+          #          RELEASE_BRANCHES: extension-release-19
+      - name: Display
+        run: echo new tag is ${{ steps.tag_version.outputs.new_tag }}
+      - name: Push version tag
+        uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
+          WITH_V: true
+          DEFAULT_BUMP: patch
+          CUSTOM_TAG: ${{ steps.tag_version.outputs.new_tag }}
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
