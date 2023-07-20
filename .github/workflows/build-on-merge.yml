@@ -57,11 +57,7 @@ jobs:
       - name: Bump version and push tag
         id: tag_version
         run: |
-          VERSION2=`git describe --tags --abbrev=0`
-          VERSION=`git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}'`
-          echo "new_tag=`echo $VERSION`" >> "$GITHUB_OUTPUT"
-          echo Current tag $VERSION2
-          echo Next tag $VERSION
+          echo "new_tag=`echo $(git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}')`" >> "$GITHUB_OUTPUT"
 #          git config --global user.name "John Doe"
 #          git config --global user.email johndoe@example.com
 #          git tag $VERSION
