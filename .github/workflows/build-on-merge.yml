@@ -83,12 +83,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
           WITH_V: true
           DEFAULT_BUMP: patch
-          DRY_RUN: true
           CUSTOM_TAG: ${{ steps.tag_version.outputs.new_tag }}
-#      - name: Create a GitHub release
-#        uses: ncipollo/release-action@v1
-#        with:
-#          tag: ${{ steps.tag_version.outputs.tag }}
-#          name: Release ${{ steps.tag_version.outputs.new_tag }}
-#          body: ${{ steps.tag_version.outputs.changelog }}
-#          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
+      - name: Create a GitHub release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.tag_version.outputs.tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
