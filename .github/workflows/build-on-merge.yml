@@ -76,7 +76,7 @@ jobs:
           #          DEFAULT_BRANCH: extension-release-19
           #          RELEASE_BRANCHES: extension-release-19
       - name: Display
-        run: echo new tag is ${{ steps.tag_version.outputs.tag }}
+        run: echo new tag is ${{ steps.tag_version.outputs.new_tag }}
       - name: Push version tag
         uses: anothrNick/github-tag-action@1.64.0 # Don't use @master or @v1 unless you're happy to test the latest version
         env:
