@@ -84,6 +84,7 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: patch
           DRY_RUN: true
+          CUSTOM_TAG: ${{ steps.tag_version.outputs.new_tag }}
 #      - name: Create a GitHub release
 #        uses: ncipollo/release-action@v1
 #        with:
