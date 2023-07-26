@@ -71,15 +71,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           DEFAULT_BUMP: major
-      - name: Create a major release
-        if: github.event.created
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ steps.major_tag.outputs.new_tag }}
-          name: Release ${{ steps.major_tag.outputs.new_tag }}
-          body: ${{ steps.major_tag.outputs.changelog }}
-          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
-          skipIfReleaseExists: true
 
       - name: Bump patch version
         if: github.event.created != true
@@ -93,6 +84,25 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: patch
           CUSTOM_TAG: ${{ steps.patch_tag.outputs.new_tag }}
+
+      - name: Set major tag env
+        if: github.event.created
+        run: echo "NEW_TAG=${{ steps.major_tag.outputs.new_tag }}" >> $GITHUB_ENV
+      - name: Set patch tag env
+        if: github.event.created != true
+        run: echo "NEW_TAG=${{ steps.patch.outputs.new_tag }}" >> $GITHUB_ENV
+      - name: Display NEW TAG env
+        run: echo ${{ env.NEW_TAG }}
+
+      - name: Create a major release
+        if: github.event.created
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.major_tag.outputs.new_tag }}
+          name: Release ${{ steps.major_tag.outputs.new_tag }}
+          body: ${{ steps.major_tag.outputs.changelog }}
+          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
+          skipIfReleaseExists: true
       - name: Create a patch release
         if: github.event.created != true
         uses: ncipollo/release-action@v1
