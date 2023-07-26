@@ -63,24 +63,27 @@ jobs:
 #      - name: Build production edge extension
 #        run: npm run edge-prod
 
-      - name: Bump version and push tag
+      - name: Bump major version and push tag
         if: github.event.created
         id: major_tag
         uses: anothrNick/github-tag-action@1.64.0
-        run: |
-          echo ${{ inputs.new_tag }}
-          echo test
-          echo ${{ outputs.new_tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           DEFAULT_BUMP: major
+      - name: Create a major release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.major_tag.outputs.new_tag }}
+          name: Release ${{ steps.major_tag.outputs.new_tag }}
+          body: ${{ steps.major_tag.outputs.changelog }}
+          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
 
-      - name: Bump version
+      - name: Bump patch version
         if: github.event.created != true
         id: patch_tag
         run: echo "new_tag=`echo $(git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}')`" >> "$GITHUB_OUTPUT"
-      - name: Push tag
+      - name: Push patch tag
         if: github.event.created != true
         uses: anothrNick/github-tag-action@1.64.0
         env:
@@ -88,10 +91,10 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: patch
           CUSTOM_TAG: ${{ steps.patch_tag.outputs.new_tag }}
-      - name: Create a GitHub release
+      - name: Create a patch release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.major_tag.outputs.new_tag }}
-          name: Release ${{ steps.major_tag.outputs.new_tag }}
-          body: ${{ steps.major_tag.outputs.changelog }}
+          tag: ${{ steps.patch_tag.outputs.new_tag }}
+          name: Release ${{ steps.patch_tag.outputs.new_tag }}
+          body: ${{ steps.patch_tag.outputs.changelog }}
           artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
