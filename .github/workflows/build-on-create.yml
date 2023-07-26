@@ -72,6 +72,7 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: major
       - name: Create a major release
+        if: github.event.created
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.major_tag.outputs.new_tag }}
