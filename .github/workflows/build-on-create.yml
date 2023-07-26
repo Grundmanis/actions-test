@@ -16,6 +16,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           persist-credentials: false,
+          fetch-depth: 0,
       - uses: actions/setup-node@v3
         with:
           node-version: '18'
@@ -66,19 +67,14 @@ jobs:
         if: github.event.created
         id: major_tag
         uses: anothrNick/github-tag-action@1.64.0
+        run: |
+          echo ${{ inputs.new_tag }}
+          echo test
+          echo ${{ outputs.new_tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           DEFAULT_BUMP: major
-
-      - name: Create a GitHub release on create
-        if: github.event.created
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ steps.major_tag.outputs.new_tag }}
-          name: Release ${{ steps.major_tag.outputs.new_tag }}
-          body: ${{ steps.major_tag.outputs.changelog }}
-          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
 
       - name: Bump version
         if: github.event.created != true
@@ -92,11 +88,10 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: patch
           CUSTOM_TAG: ${{ steps.patch_tag.outputs.new_tag }}
-      - name: Create a GitHub release on commit
-        if: github.event.created != true
+      - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.patch_tag.outputs.new_tag }}
-          name: Release ${{ steps.patch_tag.outputs.new_tag }}
-          body: ${{ steps.patch_tag.outputs.changelog }}
+          tag: ${{ steps.major_tag.outputs.new_tag }}
+          name: Release ${{ steps.major_tag.outputs.new_tag }}
+          body: ${{ steps.major_tag.outputs.changelog }}
           artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
