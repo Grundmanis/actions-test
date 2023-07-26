@@ -94,20 +94,10 @@ jobs:
       - name: Display NEW TAG env
         run: echo ${{ env.NEW_TAG }}
 
-      - name: Create a major release
-        if: github.event.created
+      - name: Create a release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.major_tag.outputs.new_tag }}
-          name: Release ${{ steps.major_tag.outputs.new_tag }}
-          body: ${{ steps.major_tag.outputs.changelog }}
+          tag: ${{ env.NEW_TAG }}
+          name: Release ${{ env.NEW_TAG }}
           artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
           skipIfReleaseExists: true
-      - name: Create a patch release
-        if: github.event.created != true
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ steps.patch_tag.outputs.new_tag }}
-          name: Release ${{ steps.patch_tag.outputs.new_tag }}
-          body: ${{ steps.patch_tag.outputs.changelog }}
-          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
