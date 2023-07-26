@@ -79,6 +79,7 @@ jobs:
           name: Release ${{ steps.major_tag.outputs.new_tag }}
           body: ${{ steps.major_tag.outputs.changelog }}
           artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
+          skipIfReleaseExists: true
 
       - name: Bump patch version
         if: github.event.created != true
