@@ -64,16 +64,25 @@ jobs:
 
       - name: Bump version and push tag
         if: github.event.created
-        id: tag_version
+        id: major_tag
         uses: anothrNick/github-tag-action@1.64.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           DEFAULT_BUMP: major
 
+      - name: Create a GitHub release
+        if: github.event.created
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.major_tag.outputs.new_tag }}
+          name: Release ${{ steps.major_tag.outputs.new_tag }}
+          body: ${{ steps.major_tag.outputs.changelog }}
+          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
+
       - name: Bump version
         if: github.event.created != true
-        id: tag_version
+        id: patch_tag
         run: echo "new_tag=`echo $(git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}')`" >> "$GITHUB_OUTPUT"
       - name: Push tag
         if: github.event.created != true
@@ -82,12 +91,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           DEFAULT_BUMP: patch
-          CUSTOM_TAG: ${{ steps.tag_version.outputs.new_tag }}
-
+          CUSTOM_TAG: ${{ steps.patch_tag.outputs.new_tag }}
       - name: Create a GitHub release
+        if: github.event.created != true
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: ${{ steps.tag_version.outputs.changelog }}
+          tag: ${{ steps.patch_tag.outputs.new_tag }}
+          name: Release ${{ steps.patch_tag.outputs.new_tag }}
+          body: ${{ steps.patch_tag.outputs.changelog }}
           artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
