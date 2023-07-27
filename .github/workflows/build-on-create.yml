@@ -80,7 +80,7 @@ jobs:
         run: echo "new_tag=`echo $(git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}')`" >> "$GITHUB_OUTPUT"
       - name: Push patch tag
         if: github.event.created != true
-        uses: anothrNick/github-tag-action@1.64.0
+        uses: anothrNick/github-tag-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
