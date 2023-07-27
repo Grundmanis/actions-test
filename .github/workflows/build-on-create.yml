@@ -74,8 +74,8 @@ jobs:
 #          DEFAULT_BUMP: major
 #          DRY_RUN: true
 
-      - name: Push patch tag
-        if: github.event.created != true
+      - name: Bump major version and push tag
+        if: github.event.created
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
