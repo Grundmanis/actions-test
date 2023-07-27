@@ -72,6 +72,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           DEFAULT_BUMP: major
+          DRY_RUN: true
 
       - name: Bump patch version
         if: github.event.created != true
@@ -85,6 +86,7 @@ jobs:
           WITH_V: true
           DEFAULT_BUMP: patch
           CUSTOM_TAG: ${{ steps.patch_tag.outputs.new_tag }}
+          DRY_RUN: true
 
       - name: Set major tag env
         if: github.event.created
@@ -101,10 +103,10 @@ jobs:
           echo ${{ env.NEW_TAG }}
           echo ${{ env.NEW_TAG_WITHOUT_V }}
 
-      - name: Create a release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ env.NEW_TAG }}
-          name: Release ${{ env.NEW_TAG }}
-          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
-          skipIfReleaseExists: true
+#      - name: Create a release
+#        uses: ncipollo/release-action@v1
+#        with:
+#          tag: ${{ env.NEW_TAG }}
+#          name: Release ${{ env.NEW_TAG }}
+#          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
+#          skipIfReleaseExists: true
