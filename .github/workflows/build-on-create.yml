@@ -64,15 +64,23 @@ jobs:
 #      - name: Build production edge extension
 #        run: npm run edge-prod
 
-      - name: Bump major version and push tag
-        if: github.event.created
-        id: major_tag
-        uses: anothrNick/github-tag-action@1.64.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: true
-          DEFAULT_BUMP: major
-          DRY_RUN: true
+#      - name: Bump major version and push tag
+#        if: github.event.created
+#        id: major_tag
+#        uses: anothrNick/github-tag-action@1.64.0
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          WITH_V: true
+#          DEFAULT_BUMP: major
+#          DRY_RUN: true
+
+      - name: Push patch tag
+        if: github.event.created != true
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          dry_run: true
+          default_bump: major
 
       - name: Bump patch version
         if: github.event.created != true
@@ -94,7 +102,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           dry_run: true
-#          WITH_V: true
           default_bump: patch
           custom_tag: ${{ steps.patch_tag.outputs.new_tag }}
 
