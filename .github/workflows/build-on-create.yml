@@ -87,12 +87,18 @@ jobs:
 
       - name: Set major tag env
         if: github.event.created
-        run: echo "NEW_TAG=${{ steps.major_tag.outputs.new_tag }}" >> $GITHUB_ENV
+        run: |
+          echo "NEW_TAG=${{ steps.major_tag.outputs.new_tag }}" >> $GITHUB_ENV
+          echo "NEW_TAG_WITHOUT_V=${{ steps.patch_tag.outputs.new_tag:1 }}" >> $GITHUB_ENV
       - name: Set patch tag env
         if: github.event.created != true
-        run: echo "NEW_TAG=${{ steps.patch_tag.outputs.new_tag }}" >> $GITHUB_ENV
+        run: |
+          echo "NEW_TAG=${{ steps.patch_tag.outputs.new_tag }}" >> $GITHUB_ENV
+          echo "NEW_TAG_WITHOUT_V=${{ steps.patch_tag.outputs.new_tag:1 }}" >> $GITHUB_ENV
       - name: Display NEW TAG env
-        run: echo ${{ env.NEW_TAG }}
+        run: |
+          echo ${{ env.NEW_TAG }}
+          echo ${{ env.NEW_TAG_WITHOUT_V }}
 
       - name: Create a release
         uses: ncipollo/release-action@v1
