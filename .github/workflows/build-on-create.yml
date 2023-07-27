@@ -76,6 +76,7 @@ jobs:
 
       - name: Bump major version and push tag
         if: github.event.created
+        id: major_tag
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -113,6 +114,7 @@ jobs:
           echo "NEW_TAG=${{ steps.major_tag.outputs.new_tag }}" >> $GITHUB_ENV
           echo ${NEW_TAG}
           echo "VERSION=${NEW_TAG#v}" >> $GITHUB_ENV
+          echo Release type ${{ steps.major_tag.outputs.release_type }}
       - name: Set patch tag env
         if: github.event.created != true
         run: |
