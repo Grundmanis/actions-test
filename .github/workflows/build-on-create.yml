@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - extension-release-*
+      - master
 
 jobs:
   release:
@@ -89,12 +90,12 @@ jobs:
         if: github.event.created
         run: |
           echo "NEW_TAG=${{ steps.major_tag.outputs.new_tag }}" >> $GITHUB_ENV
-          echo "NEW_TAG_WITHOUT_V=${{ steps.patch_tag.outputs.new_tag:1 }}" >> $GITHUB_ENV
+          echo "NEW_TAG_WITHOUT_V=${NEW_TAG}" >> $GITHUB_ENV
       - name: Set patch tag env
         if: github.event.created != true
         run: |
           echo "NEW_TAG=${{ steps.patch_tag.outputs.new_tag }}" >> $GITHUB_ENV
-          echo "NEW_TAG_WITHOUT_V=${{ steps.patch_tag.outputs.new_tag:1 }}" >> $GITHUB_ENV
+          echo "NEW_TAG_WITHOUT_V=${NEW_TAG}" >> $GITHUB_ENV
       - name: Display NEW TAG env
         run: |
           echo ${{ env.NEW_TAG }}
