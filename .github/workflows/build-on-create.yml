@@ -97,9 +97,8 @@ jobs:
       - name: Set patch tag env
         if: github.event.created != true
         run: |
-          echo "NEW_TAG=${{ steps.patch_tag.outputs.new_tag }}" >> $GITHUB_ENV
           TAG=${{ steps.patch_tag.outputs.new_tag }}
-          echo ${TAG}
+          echo "NEW_TAG=${TAG}" >> $GITHUB_ENV
           echo "VERSION=${TAG#v}" >> $GITHUB_ENV
       - name: Display NEW TAG env
         run: |
