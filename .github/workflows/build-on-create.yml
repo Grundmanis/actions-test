@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - extension-release-*
-#      - master
+      - master
 
 jobs:
   release:
@@ -22,71 +22,22 @@ jobs:
         with:
           node-version: '18'
           cache: 'npm'
-      - name: Cache node_modules
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node_modules-
-      - run: sudo apt-get update
-      - name: configure github auth for npm
-        run: git config --global url."https://${{ secrets.GH_DEPENDENCIES_TOKEN }}:x-oauth-basic@github.com/".insteadOf https://x-oauth-basic@github.com/
-      - name: Install NPM Dependencies
-        run: npm ci --silent | cat
-
-#      - name: Create dev chrome zip
-#        run: zip -r chrome-dev.zip *
-#        working-directory: ./dist/chrome-dev
-#
-#      - name: Create production chrome zip
-#        run: zip -r chrome.zip *
-#        working-directory: ./dist/chrome-prod
-#
-#      - name: Create production firefox zip
-#        run: zip -r firefox.zip *
-#        working-directory: ./dist/firefox-prod
-#
-#      - name: Create firefox source zip
-#        run: zip -r firefox-source.zip *
-#        working-directory: ./dist/firefox-source
-#
-#      - name: Create a production edge zip
-#        run: zip -r edge.zip *
-#        working-directory: ./dist/edge-prod
-#
-#      - name: Build dev chrome extension
-#        run: npm run chrome-dev -- --env version=1.2.3
-#      - name: Build production chrome extension
-#        run: npm run chrome-prod -- --env version=1.2.3
-#      - name: Build production firefox extension
-#        run: npm run firefox-release
-#      - name: Build production edge extension
-#        run: npm run edge-prod
-
-#      - name: Bump major version and push tag
-#        if: github.event.created
-#        id: major_tag
-#        uses: anothrNick/github-tag-action@1.64.0
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          WITH_V: true
-#          DEFAULT_BUMP: major
-#          DRY_RUN: true
 
       - name: Bump major version and push tag
-        if: github.event.created
+#        if: github.event.created
         id: major_tag
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           dry_run: true
-          default_bump: major
+          default_bump: false
 
-      - name: Bump patch version
-        if: github.event.created != true
-        id: patch_tag
-        run: echo "new_tag=`echo $(git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}')`" >> "$GITHUB_OUTPUT"
+#      - name: Bump patch version
+#        if: github.event.created != true
+#        id: patch_tag
+#        run: echo "new_tag=`echo $(git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}')`" >> "$GITHUB_OUTPUT"
+
+
 #      - name: Push patch tag
 #        if: github.event.created != true
 #        uses: anothrNick/github-tag-action@1.64.0
@@ -97,14 +48,14 @@ jobs:
 #          CUSTOM_TAG: ${{ steps.patch_tag.outputs.new_tag }}
 #          DRY_RUN: true
 
-      - name: Push patch tag
-        if: github.event.created != true
-        uses: mathieudutour/github-tag-action@v6.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          dry_run: true
-          default_bump: patch
-          custom_tag: ${{ steps.patch_tag.outputs.new_tag }}
+#      - name: Push patch tag
+#        if: github.event.created != true
+#        uses: mathieudutour/github-tag-action@v6.1
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          dry_run: true
+#          default_bump: patch
+#          custom_tag: ${{ steps.patch_tag.outputs.new_tag }}
 
 
 
