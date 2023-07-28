@@ -31,19 +31,10 @@ jobs:
 #          dry_run: true
           release_branches: extension-release-*
 
-      - name: Bump patch version and push tag
+      - name: Bump patch version
         if: github.event.created != true
         id: patch_tag
-        uses: mathieudutour/github-tag-action@v6.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          release_branches: extension-release-*
-#          dry_run: true
-
-#      - name: Bump patch version
-#        if: github.event.created != true
-#        id: patch_tag
-#        run: echo "new_tag=`echo $(git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}')`" >> "$GITHUB_OUTPUT"
+        run: echo "new_tag=`echo $(git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}')`" >> "$GITHUB_OUTPUT"
 
 
 #      - name: Push patch tag
@@ -56,15 +47,12 @@ jobs:
 #          CUSTOM_TAG: ${{ steps.patch_tag.outputs.new_tag }}
 #          DRY_RUN: true
 
-#      - name: Push patch tag
-#        if: github.event.created != true
-#        uses: mathieudutour/github-tag-action@v6.1
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          dry_run: true
-#          default_bump: patch
-#          custom_tag: ${{ steps.patch_tag.outputs.new_tag }}
-
+      - name: Push patch tag
+        if: github.event.created != true
+        uses: mathieudutour/github-tag-action@v6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          custom_tag: ${{ steps.patch_tag.outputs.new_tag }}
 
 
       - name: Set major tag env
