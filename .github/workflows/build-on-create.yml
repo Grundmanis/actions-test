@@ -53,9 +53,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ steps.patch_tag.outputs.new_tag }}
-          dry_run: true
-
-
       - name: Set major tag env
         if: github.event.created
         run: |
