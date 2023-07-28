@@ -30,7 +30,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           dry_run: true
-          default_bump: false
+          default_bump: major
+          release_branches: master
 
 #      - name: Bump patch version
 #        if: github.event.created != true
