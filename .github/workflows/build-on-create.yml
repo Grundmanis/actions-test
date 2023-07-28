@@ -71,10 +71,10 @@ jobs:
           echo ${{ env.NEW_TAG }}
           echo ${{ env.VERSION }}
 
-#      - name: Create a release
-#        uses: ncipollo/release-action@v1
-#        with:
-#          tag: ${{ env.NEW_TAG }}
-#          name: Release ${{ env.NEW_TAG }}
-#          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
-#          skipIfReleaseExists: true
+      - name: Create a release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.NEW_TAG }}
+          name: Release ${{ env.NEW_TAG }}
+          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
+          skipIfReleaseExists: true
