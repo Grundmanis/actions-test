@@ -7,7 +7,6 @@ on:
 
 jobs:
   release:
-#    if: github.event.created
     runs-on: ubuntu-22.04
     permissions:
       contents: write
@@ -28,14 +27,13 @@ jobs:
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          dry_run: true
           default_bump: major
           release_branches: extension-release-*
 
-      - name: Bump patch version
-        if: github.event.created != true
-        id: patch_tag
-        run: echo "new_tag=`echo $(git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}')`" >> "$GITHUB_OUTPUT"
+#      - name: Bump patch version
+#        if: github.event.created != true
+#        id: patch_tag
+#        run: echo "new_tag=`echo $(git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}')`" >> "$GITHUB_OUTPUT"
 
 
 #      - name: Push patch tag
@@ -48,14 +46,14 @@ jobs:
 #          CUSTOM_TAG: ${{ steps.patch_tag.outputs.new_tag }}
 #          DRY_RUN: true
 
-      - name: Push patch tag
-        if: github.event.created != true
-        uses: mathieudutour/github-tag-action@v6.1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          dry_run: true
-          default_bump: patch
-          custom_tag: ${{ steps.patch_tag.outputs.new_tag }}
+#      - name: Push patch tag
+#        if: github.event.created != true
+#        uses: mathieudutour/github-tag-action@v6.1
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          dry_run: true
+#          default_bump: patch
+#          custom_tag: ${{ steps.patch_tag.outputs.new_tag }}
 
 
 
@@ -66,12 +64,12 @@ jobs:
           echo ${NEW_TAG}
           echo "VERSION=${NEW_TAG#v}" >> $GITHUB_ENV
           echo Release type ${{ steps.major_tag.outputs.release_type }}
-      - name: Set patch tag env
-        if: github.event.created != true
-        run: |
-          TAG=${{ steps.patch_tag.outputs.new_tag }}
-          echo "NEW_TAG=${TAG}" >> $GITHUB_ENV
-          echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+#      - name: Set patch tag env
+#        if: github.event.created != true
+#        run: |
+#          TAG=${{ steps.patch_tag.outputs.new_tag }}
+#          echo "NEW_TAG=${TAG}" >> $GITHUB_ENV
+#          echo "VERSION=${TAG#v}" >> $GITHUB_ENV
       - name: Display NEW TAG env
         run: |
           echo ${{ env.NEW_TAG }}
