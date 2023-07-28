@@ -28,7 +28,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           default_bump: major
-          dry_run: true
+#          dry_run: true
           release_branches: extension-release-*
 
       - name: Bump patch version and push tag
@@ -38,7 +38,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_branches: extension-release-*
-          dry_run: true
+#          dry_run: true
 
 #      - name: Bump patch version
 #        if: github.event.created != true
@@ -85,10 +85,10 @@ jobs:
           echo ${{ env.NEW_TAG }}
           echo ${{ env.VERSION }}
 
-#      - name: Create a release
-#        uses: ncipollo/release-action@v1
-#        with:
-#          tag: ${{ env.NEW_TAG }}
-#          name: Release ${{ env.NEW_TAG }}
-#          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
-#          skipIfReleaseExists: true
+      - name: Create a release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ env.NEW_TAG }}
+          name: Release ${{ env.NEW_TAG }}
+          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
+          skipIfReleaseExists: true
