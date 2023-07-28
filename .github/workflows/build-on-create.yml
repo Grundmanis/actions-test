@@ -67,6 +67,7 @@ jobs:
           TAG=${{ steps.patch_tag.outputs.new_tag }}
           echo "NEW_TAG=${TAG}" >> $GITHUB_ENV
           echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+          echo new version ${{ steps.patch_tag.outputs.new_version }}
       - name: Display NEW TAG env
         run: |
           echo ${{ env.NEW_TAG }}
