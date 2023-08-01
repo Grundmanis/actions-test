@@ -27,9 +27,9 @@ jobs:
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-#          default_bump: major
+          default_bump: patch
           #          dry_run: true
-#          release_branches: extension-release-*
+          release_branches: extension-release-*
 
       - name: Bump patch version
         if: github.event.created != true
