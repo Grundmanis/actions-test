@@ -66,5 +66,5 @@ jobs:
         with:
           tag: ${{ env.NEW_TAG }}
           name: Release ${{ env.NEW_TAG }}
-          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
+          artifacts: dist/chrome/, dist/firefox/
           skipIfReleaseExists: true
