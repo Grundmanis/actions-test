@@ -27,6 +27,7 @@ jobs:
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          create_annotated_tag: true,
           default_bump: patch
           release_branches: extension-release-*
 
@@ -35,12 +36,12 @@ jobs:
         id: patch_from_branch
         run: echo "new_tag=`echo $(git describe --tags --abbrev=0 | awk -F. '{OFS="."; $NF+=1; print $0}')`" >> "$GITHUB_OUTPUT"
 
-
       - name: Push patch tag
         if: github.event.created != true
         uses: mathieudutour/github-tag-action@v6.1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          create_annotated_tag: true,
           custom_tag: ${{ steps.patch_from_branch.outputs.new_tag }}
           tag_prefix: ""
       - name: Set major tag env
@@ -61,10 +62,18 @@ jobs:
           echo ${{ env.NEW_TAG }}
           echo ${{ env.VERSION }}
 
+      - name: Create chrome zip
+        run: zip -r chrome-${{ env.VERSION }}.zip *
+        working-directory: ./dist/chrome
+
+      - name: Create filefox zip
+        run: zip -r firefox-${{ env.VERSION }}.zip *
+        working-directory: ./dist/firefox
+
       - name: Create a release
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ env.NEW_TAG }}
           name: Release ${{ env.NEW_TAG }}
-          artifacts: dist/chrome/chrome.zip, dist/firefox/firefox.zip
+          artifacts: dist/chrome/chrome-${{ env.VERSION }}.zip, dist/firefox/firefox-${{ env.VERSION }}.zip
           skipIfReleaseExists: true
